@@ -1,0 +1,388 @@
+/* RPGBattleMode.css */
+.rpg-battle-container {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    row-gap: 90px;
+}
+
+/* Área del enemigo (mitad superior) */
+.enemigo-area {
+    height: 50vh;
+    min-height: 300px;
+    position: relative;
+    transition: all 0.3s ease;
+    border-bottom: 4px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.enemigo-area.recibiendo-danio {
+    animation: recibirDanio 0.3s ease;
+}
+
+@keyframes recibirDanio {
+    0%, 100% {
+
+        transform: scale(1);
+    }
+    25%, 75% {
+        filter: brightness(1.5) hue-rotate(90deg);
+        transform: scale(0.98);
+    }
+    50% {
+        filter: brightness(2) hue-rotate(180deg);
+        transform: scale(0.95);
+    }
+}
+
+.enemigo-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.enemigo-imagen {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: #2a2a3a;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.enemigo-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 30px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.enemigo-nombre {
+    color: gold;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0;
+    animation: flotar 3s infinite ease-in-out;
+}
+
+@keyframes flotar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.enemigo-vida-bar {
+    width: 100%;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid gold;
+}
+
+.enemigo-vida-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff4444, #ff6b6b);
+    transition: width 0.5s ease;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.enemigo-vida-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    animation: shine 2s infinite;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.enemigo-vida-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* Área de texto (mitad inferior) */
+.batalla-texto-area {
+    height: 50vh;
+    min-height: 300px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #2a2a3a, #1a1a2a);
+    border-top: 4px solid rgba(255, 215, 0, 0.3);
+    position: relative;
+}
+
+.turno-indicador {
+    font-size: 1.8rem;
+    font-weight: bold;
+    padding: 15px 40px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: aparecer 0.5s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.turno-indicador.jugador {
+    filter: blur(3px);
+    background: rgba(72, 140, 95, 0.715);
+    background: linear-gradient(135deg, #3f8141a4, #3f8141a4);
+     box-shadow: 0 0 10px #fff,
+              0 0 20px #fff,
+              0 0 40px #00ffff;
+    color: white;
+    row-gap: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.turno-indicador.enemigo {
+    filter: blur(3px);
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: pulsarEnemigo 1s infinite;
+}
+
+@keyframes pulsarEnemigo {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.mensaje-batalla {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 30px;
+    animation: deslizar 0.3s ease;
+}
+
+@keyframes deslizar {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.texto-objetivo-rpg {
+    font-size: 2rem;
+    color: gold;
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.oracion-ataque {
+    color: white;
+    font-family: 'Courier New', monospace;
+    position: relative;
+}
+
+.oracion-ataque .comillas {
+    color: #ff6b6b;
+    font-size: 2.5rem;
+    margin: 0 10px;
+}
+
+.palabra-defensa {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ff4444;
+    animation: latido 0.5s infinite;
+}
+
+@keyframes latido {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.rpg-input {
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+    font-size: 1.2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    border-radius: 50px;
+    color: white;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.rpg-input:focus {
+    outline: none;
+    border-color: gold;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    transform: scale(1.02);
+}
+
+.rpg-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Estadísticas de batalla */
+.batalla-stats {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-top: 20px;
+    padding: 15px 30px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50px;
+}
+
+.vidas-container-rpg {
+    display: flex;
+    align-items:baseline;
+    gap: 5px;
+}
+
+.corazon {
+    font-size: 1.8rem;
+    transition: all 0.3s ease;
+}
+
+.corazon.activo {
+    animation: latidoCorazon 1s infinite;
+}
+
+@keyframes latidoCorazon {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.corazon.perdido {
+    opacity: 0.3;
+    filter: grayscale(1);
+}
+
+.vidas-text {
+    color: white;
+    font-size: 1.2rem;
+    margin-left: 10px;
+}
+
+.puntuacion-rpg, .racha-rpg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+}
+
+.puntuacion-icon, .racha-icon {
+    font-size: 1.3rem;
+}
+
+.puntuacion-valor, .racha-valor {
+    color: white;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+/* Timer personalizado para este modo */
+.timer-container {
+    transform: scale(0.8);
+    margin: 10px 0;
+}
+
+/* Animaciones */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .enemigo-nombre {
+        font-size: 1.8rem;
+    }
+    
+    .turno-indicador {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+    }
+    
+    .texto-objetivo-rpg {
+        font-size: 1.5rem;
+    }
+    
+    .oracion-ataque .comillas {
+        font-size: 2rem;
+    }
+    
+    .palabra-defensa {
+        font-size: 2rem;
+    }
+    
+    .batalla-stats {
+        gap: 15px;
+        padding: 10px 20px;
+    }
+    
+    .corazon {
+        font-size: 1.3rem;
+    }
+}
+
+/* Efectos especiales */
+@keyframes danio {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    25%, 75% {
+        filter: brightness(1.5) hue-rotate(90deg);
+    }
+    50% {
+        filter: brightness(2) hue-rotate(180deg);
+    }
+}

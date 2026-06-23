@@ -1,0 +1,83 @@
+/* Navbar.css */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  background-color: #1E1A2B;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.logo-text {
+  color: white;
+  cursor: pointer;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s;
+}
+
+.nav-link:hover {
+  color: #007bff;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 4px;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Estilos para los botones de descarga */
+.login-btn, .signup-btn {
+  transition: all 0.3s !important;
+}
+
+.login-btn:hover {
+  background-color: rgba(255,255,255,0.1) !important;
+  transform: translateY(-2px);
+}
+
+.signup-btn:hover {
+  background-color: #0056b3 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,123,255,0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 15px;
+    padding: 1rem;
+  }
+  
+  .nav-menu {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .nav-actions {
+    width: 100%;
+    justify-content: center;
+  }
+}

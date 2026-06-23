@@ -1,0 +1,22 @@
+* {
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Mate SC';
+}
+.cuadritos{
+    width: 362px;
+    height: 304px;
+    background-color: #3E3657;
+    align-items: center;
+    display:inline-flexbox;
+    
+}
+.Logo{
+ justify-content: baseline;
+ cursor: pointer;   
+}
+menuItem{
+    font-family: Mate SC;
+    color: ffffff;
+}

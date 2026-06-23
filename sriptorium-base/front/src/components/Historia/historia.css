@@ -1,0 +1,409 @@
+/* components/ModoHistoria/ModoHistoriaFragmentado.css */
+.modo-historia-fragmentado {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: white;
+    padding: 20px;
+    font-family: 'Georgia', serif;
+}
+
+/* Header */
+.historia-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 15px 25px;
+    border-radius: 50px;
+    margin-bottom: 30px;
+}
+
+.historia-titulo-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.historia-titulo-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #FFD700;
+}
+
+.capitulo-badge {
+    background: #4CAF50;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+}
+
+.xp-counter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255, 215, 0, 0.2);
+    padding: 8px 15px;
+    border-radius: 50px;
+}
+
+.xp-icon {
+    font-size: 1.2rem;
+}
+
+.xp-value {
+    font-weight: bold;
+    color: #FFD700;
+}
+
+/* Barra de progreso general */
+.progreso-general {
+    margin-bottom: 20px;
+}
+
+.progreso-barra {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progreso-llenado {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    transition: width 0.3s ease;
+    border-radius: 5px;
+}
+
+.progreso-texto {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Estadísticas rápidas */
+.estadisticas-rapidas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stat {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+/* Área de lectura */
+.area-lectura {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.panel-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.fragmento-titulo {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #FFD700;
+}
+
+.fragmento-longitud {
+    margin-left: 10px;
+    font-size: 0.9rem;
+    opacity: 0.6;
+    font-weight: normal;
+}
+
+.fragmento-controles {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.btn-control:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-control:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Texto objetivo */
+.texto-objetivo {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    font-family: 'Georgia', serif;
+    margin-bottom: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.caracter {
+    display: inline-block;
+    transition: all 0.2s;
+    font-family: monospace;
+}
+
+.caracter.correcto {
+    color: #4CAF50;
+}
+
+.caracter.error {
+    color: #f44336;
+    background: rgba(244, 67, 54, 0.1);
+    text-decoration: wavy underline #f44336;
+}
+
+.caracter.actual {
+    background: rgba(255, 215, 0, 0.2);
+    border-left: 2px solid #FFD700;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Área de escritura */
+.area-escritura {
+    width: 100%;
+    min-height: 150px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #FFD700;
+    border-radius: 15px;
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    resize: vertical;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+}
+
+.area-escritura:focus {
+    outline: none;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+/* Barra de progreso del fragmento */
+.progreso-fragmento {
+    margin-bottom: 20px;
+}
+
+.progreso-fragmento-barra {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progreso-fragmento-llenado {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD700, #FFA500);
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+.progreso-fragmento-texto {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Miniaturas de fragmentos */
+.miniaturas-fragmentos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.miniatura-fragmento {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    font-size: 0.9rem;
+    border: 2px solid transparent;
+}
+
+.miniatura-fragmento:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.miniatura-fragmento.completado {
+    background: #4CAF50;
+    color: white;
+}
+
+.miniatura-fragmento.actual {
+    border-color: #FFD700;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #FFD700;
+}
+
+.miniatura-check {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #4CAF50;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+/* Capítulo completado */
+.capitulo-completado {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    margin-top: 30px;
+}
+
+.capitulo-completado h2 {
+    font-size: 2.5rem;
+    color: #FFD700;
+    margin-bottom: 15px;
+}
+
+.capitulo-completado p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.btn-siguiente {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-siguiente:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4);
+}
+
+/* Logro toast */
+.logro-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    animation: slideIn 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Cargando */
+.cargando {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-size: 1.5rem;
+    color: white;
+    animation: pulse 1.5s infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .estadisticas-rapidas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .panel-superior {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .texto-objetivo {
+        font-size: 1rem;
+        padding: 15px;
+    }
+
+    .miniaturas-fragmentos {
+        justify-content: center;
+    }
+}
