@@ -1,0 +1,178 @@
+// ============================================
+// BIBLIOTECAS - El primer dolor de cabeza
+// ============================================
+#include <U8g2lib.h>     // Para la pantalla
+#include <WiFi.h>        // Para el WiFi (porque te gusta sufrir)
+
+// ============================================
+// CONFIGURACIÓN DE PINES - Aquí muchos se equivocan
+// ============================================
+#define PIN_SCK  12  // D0 - Reloj (si lo pones mal, no funciona)
+#define PIN_MOSI 11  // D1 - Datos (si lo pones mal, datos corruptos)
+#define PIN_CS   8   // CS  - Selección de chip (puede ser cualquier GPIO)
+#define PIN_DC   9   // DC  - Dato/Comando (puede ser cualquier GPIO)
+#define PIN_RES  10  // RES - Reset (puede ser cualquier GPIO)
+
+// ============================================
+// EL CONSTRUCTOR - Aquí viene la magia negra
+// ============================================
+// U8G2_SSD1306_128X64_NONAME_1_4W_HW_SPI(rotación, CS, DC, RES)
+//   - 1 = buffer pequeño (usa poca RAM)
+//   - 4W_HW_SPI = Hardware SPI (más rápido)
+//   - U8G2_R0 = sin rotación
+// 
+// ⚠️ EXPLICACIÓN DOLOROSA:
+// Este constructor NO necesita SCK y MOSI porque usa el hardware SPI
+// del ESP32. Los pines SCK y MOSI están predefinidos por el hardware.
+// En ESP32-S3, el SPI por defecto usa:
+//   - SCK  = GPIO12 (por eso usamos 12)
+//   - MOSI = GPIO11 (por eso usamos 11)
+// 
+// Si cambiaras estos pines, tendrías que usar el constructor SW_SPI
+// (software SPI) que es más lento y necesita todos los pines.
+// ============================================
+U8G2_SSD1306_128X64_NONAME_1_4W_HW_SPI u8g2(U8G2_R0, PIN_CS, PIN_DC, PIN_RES);
+
+// ============================================
+// CONFIGURACIÓN WiFi - Para que sufras con las conexiones
+// ============================================
+const char* ssid = "TU_WIFI";        // Cambia esto
+const char* password = "TU_CONTRASEÑA"; // Cambia esto
+
+// ============================================
+// SETUP - Donde todo comienza (y a veces termina)
+// ============================================
+void setup() {
+  // ⚠️ IMPORTANTE: Serial.begin ANTES que u8g2.begin()
+  // Si lo pones después, no verás los mensajes de depuración
+  Serial.begin(115200);
+  Serial.println("🚀 Iniciando... (cruza los dedos)");
+
+  // ============================================
+  // INICIALIZACIÓN DE LA PANTALLA - EL MOMENTO DE VERDAD
+  // ============================================
+  u8g2.begin();
+  
+  // ⚠️ ESTO ES CRÍTICO:
+  // u8g2.begin() NO configura automáticamente los pines como OUTPUT
+  // Pero el constructor con HW_SPI ya lo hace internamente
+  // NO necesitas pinMode() para los pines SPI
+  
+  // ⚠️ OTRA COSA CRÍTICA:
+  // Algunas pantallas necesitan un reseteo manual después de begin()
+  // Si ves que no funciona, descomenta esto:
+  // u8g2.setPowerSave(0); // Enciende la pantalla explícitamente
+  
+  // Limpia el buffer de la pantalla
+  u8g2.clearBuffer();
+  
+  // ============================================
+  // CONEXIÓN WiFi - El verdadero dolor de cabeza
+  // ============================================
+  Serial.print("📶 Conectando a WiFi");
+  WiFi.begin(ssid, password);
+  
+  // ⚠️ MIENTRAS SE CONECTA, la pantalla NO se actualiza
+  // Esto puede causar problemas si tardas mucho
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  
+  Serial.println("\n✅ WiFi conectado!");
+  Serial.print("📡 IP: ");
+  Serial.println(WiFi.localIP());
+  
+  // ============================================
+  // MENSAJE INICIAL - Para saber que todo funciona
+  // ============================================
+  Serial.println("🖥️  Mostrando mensaje en pantalla...");
+  mostrarMensaje("HOLA MUNDO");
+}
+
+// ============================================
+// LOOP - El ciclo infinito de sufrimiento
+// ============================================
+void loop() {
+  // ⚠️ EL PROBLEMA: El WiFi puede interrumpir la comunicación SPI
+  // Si ves que la pantalla se corrompe, es porque el WiFi está
+  // usando interrupciones que chocan con SPI
+  
+  // Mostramos el mensaje, pero ahora con parpadeo
+  static unsigned long ultimoCambio = 0;
+  static bool visible = true;
+  
+  if (millis() - ultimoCambio > 2000) { // Cada 2 segundos
+    ultimoCambio = millis();
+    visible = !visible;
+    
+    if (visible) {
+      mostrarMensaje("HOLA MUNDO");
+    } else {
+      mostrarMensaje(""); // Pantalla vacía (parpadeo)
+    }
+  }
+  
+  // ⚠️ IMPORTANTE: delay() bloquea todo, incluyendo WiFi
+  // Si usas delay(1000), el WiFi podría desconectarse
+  // Mejor usar millis() como arriba para no bloquear
+  
+  delay(50); // Pequeña pausa para no saturar el procesador
+}
+
+// ============================================
+// FUNCIÓN PARA DIBUJAR - Donde ocurre la magia
+// ============================================
+void mostrarMensaje(String texto) {
+  // ============================================
+  // EL RITUAL DE DIBUJO DE U8g2
+  // ============================================
+  // ⚠️ EXPLICACIÓN DOLOROSA:
+  // U8g2 usa un sistema de doble buffer para ahorrar RAM
+  // firstPage() inicia el buffer
+  // nextPage() envía el buffer a la pantalla
+  // Todo lo que dibujes DEBE estar dentro del do-while
+  // ============================================
+  
+  u8g2.firstPage();
+  do {
+    // === CONFIGURACIÓN DE FUENTE ===
+    // ⚠️ setFont() DEBE llamarse CADA VEZ que dibujas
+    // Si no lo pones, usa la fuente anterior o basura
+    u8g2.setFont(u8g2_font_ncenB14_tr);
+    
+    // === COLOR ===
+    // ⚠️ setDrawColor(1) = blanco, (0) = negro
+    // En OLED monocromático, solo blanco y negro
+    u8g2.setDrawColor(1);
+    
+    // === LIMPIAR PANTALLA ===
+    // ⚠️ clearBuffer() NO limpia la pantalla física
+    // Solo limpia el buffer interno
+    // El buffer se envía con nextPage()
+    u8g2.clearBuffer();
+    
+    // === CENTRAR TEXTO ===
+    // ⚠️ drawStr() NO centra automáticamente
+    // Necesitas calcular la posición manualmente
+    int ancho = u8g2.getStrWidth(texto.c_str());
+    int alto = u8g2.getFontAscent() - u8g2.getFontDescent();
+    
+    // Centro de pantalla: 128x64
+    int x = (128 - ancho) / 2;
+    int y = (64 + alto) / 2;
+    
+    // === DIBUJAR TEXTO ===
+    if (texto.length() > 0) {
+      u8g2.drawStr(x, y, texto.c_str());
+    }
+    
+    // === BONUS: MOSTRAR IP EN ESQUINA ===
+    // Para que veas que el WiFi funciona
+    u8g2.setFont(u8g2_font_6x10_tf);
+    u8g2.drawStr(0, 10, WiFi.localIP().toString().c_str());
+    
+  } while (u8g2.nextPage());
+  // ⚠️ nextPage() devuelve false cuando termina
+  // Si no llamas a nextPage(), la pantalla NO se actualiza
+}
